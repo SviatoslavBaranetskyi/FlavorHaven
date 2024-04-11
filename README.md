@@ -6,7 +6,6 @@ The main idea is to create an API for a restaurant service.
 - Django
 - Django Rest Framework
 - PostgreSQL
-- JWT
 - Swagger
 # Description:
 - Retrieve list of all dishes<br>
