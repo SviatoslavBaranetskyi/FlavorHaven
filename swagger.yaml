@@ -1,0 +1,215 @@
+swagger: '2.0'
+info:
+  title: FlavorHaven
+  description: RESTful API for restaurant service
+  license:
+    name: MIT License
+  version: v1
+host: 127.0.0.1:8000
+schemes:
+- http
+basePath: /api/v1
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+- Basic: []
+paths:
+  /categories:
+    get:
+      operationId: categories_list
+      summary: Get list of all categories
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+      tags:
+      - categories
+    parameters: []
+  /categories/{category_id}/dishes:
+    get:
+      operationId: categories_dishes_list
+      summary: Get list of dishes by category ID
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Menu'
+      tags:
+      - categories
+    parameters:
+    - name: category_id
+      in: path
+      required: true
+      type: string
+  /menu:
+    get:
+      operationId: menu_list
+      summary: Get list of all menus
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Menu'
+      tags:
+      - menu
+    parameters: []
+  /menu/{id}:
+    get:
+      operationId: menu_read
+      summary: Get details of a dish by ID
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Menu'
+      tags:
+      - menu
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this menu.
+      required: true
+      type: integer
+  /reservations:
+    get:
+      operationId: reservations_list
+      summary: Get list of reservations
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Reservation'
+      tags:
+      - reservations
+    post:
+      operationId: reservations_create
+      summary: Create a new reservation
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Reservation'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Reservation'
+      tags:
+      - reservations
+    parameters: []
+definitions:
+  Category:
+    required:
+    - name
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      name:
+        title: Name
+        type: string
+        maxLength: 50
+        minLength: 1
+  Menu:
+    required:
+    - categories
+    - name
+    - description
+    - price
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      categories:
+        type: array
+        items:
+          type: string
+        uniqueItems: true
+      name:
+        title: Name
+        type: string
+        maxLength: 100
+        minLength: 1
+      description:
+        title: Description
+        type: string
+        minLength: 1
+      price:
+        title: Price
+        type: string
+        format: decimal
+  Reservation:
+    required:
+    - guests
+    - date
+    - time
+    - first_name
+    - last_name
+    - phone_number
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      guests:
+        title: Guests
+        type: integer
+        maximum: 10
+        minimum: 1
+      date:
+        title: Date
+        type: string
+        format: date
+      time:
+        title: Time
+        type: string
+      first_name:
+        title: First name
+        type: string
+        maxLength: 100
+        minLength: 1
+      last_name:
+        title: Last name
+        type: string
+        maxLength: 100
+        minLength: 1
+      phone_number:
+        title: Phone number
+        type: string
+        maxLength: 20
+        minLength: 1
+      special_request:
+        title: Special request
+        type: string
+        x-nullable: true
